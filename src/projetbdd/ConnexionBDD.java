@@ -14,18 +14,18 @@ import java.sql.Statement;
  * @author Emeline
  */
 public class ConnexionBDD {
-    
-    public Connection Connexion(){
-        
-    try {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost/hotelsbdd","root","");
-        return connexion;
-    } catch (Exception e){
-        System.out.println("La tentative de connexion a échoué");    
-        e.printStackTrace();
-        return null;
-       }
+
+    public Connection Connexion() {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost/hotelbdd", "root", "");
+            return connexion;
+        } catch (Exception e) {
+            System.out.println("La tentative de connexion a échoué");
+            e.printStackTrace();
+            return null;
+        }
     }
-    
+
 }
