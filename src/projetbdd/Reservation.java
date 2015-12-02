@@ -85,18 +85,24 @@ public class Reservation {
 
     }
 
+    /**
+     * Affiche toutes les réservations dans la console.
+     */
     public void afficherReservations() {
         try {
+            // Création et exécution de la requête
             Statement state = connexion.createStatement();
             ResultSet res = state.executeQuery("SELECT * FROM reserve");
+            // Parcours des résultats
             while (res.next()) {
+                // Récupération des attributs
                 int num_reservation = res.getInt("num_reservation");
                 int num_client = res.getInt("num_reservation");
                 String date_debut = res.getString("date_debut");
                 String date_fin = res.getString("date_fin");
                 int num_chambre = res.getInt("num_chambre");
+                // Affichage
                 System.out.println("Réversation n°" + num_reservation + " du client n°" + num_client + " du " + date_debut + " au " + date_fin + " pour la chambre n°" + num_chambre);
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(Reservation.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,12 +113,32 @@ public class Reservation {
 
     }
 
-    public void modifierReservation(String date_debut, String date_fin, int num_chambre, int num_client) {
+    /**
+     * Méthode qui modifie une réservation.
+     *
+     * @param num_reservation integer
+     * @param date_debut Date de début de réservation.
+     * @param date_fin Date de fin de réservation.
+     * @param num_chambre Numéro de la chambre réservé.
+     * @param num_client Numéro du client réservé.
+     */
+    public void modifierReservation(int num_reservation, String date_debut, String date_fin, int num_chambre, int num_client) {
 
     }
 
-    public void supprimerReservation(String date_debut, String date_fin, int num_chambre, int num_client) {
-
+    /**
+     * Méthode qui supprime une réservation en fonction de son numéro.
+     *
+     * @param num_reservation integer
+     */
+    public void supprimerReservation(int num_reservation) {
+        try {
+            // Création et exécution de la requête.
+            Statement state = connexion.createStatement();
+            ResultSet res = state.executeQuery("DELETE FROM reserve WHERE num_reservation=" + num_reservation);
+        } catch (SQLException ex) {
+            Logger.getLogger(Reservation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void main(String[] args) {
