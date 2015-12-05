@@ -22,13 +22,13 @@ public class Occupation {
     ConnexionBDD c = new ConnexionBDD();
     Connection connexion = c.Connexion();
     
-    public void chambresOccupeesJour(String nomHotel){
+    public void chambresOccupeesJour(int categorie, String nomHotel){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date jour = new Date();
         String dateJour = dateFormat.format(jour);
         try {
             Statement statement = connexion.createStatement();
-            ResultSet resultatChambre = statement.executeQuery("SELECT occupe.num_chambre, occupe.num_client, client.nom, date_debut_occupation, date_fin_occupation FROM occupe INNER JOIN client ON occupe.num_client = client.num_client INNER JOIN chambre ON occupe.num_chambre = chambre.num_chambre INNER JOIN hotel ON chambre.num_hotel = hotel.num_hotel WHERE date_debut_occupation <= '"+dateJour+"'AND date_fin_occupation >='"+dateJour+"' AND hotel.nom = '"+nomHotel+"';" );
+            ResultSet resultatChambre = statement.executeQuery("SELECT occupe.num_chambre, occupe.num_client, client.nom, date_debut_occupation, date_fin_occupation FROM occupe INNER JOIN client ON occupe.num_client = client.num_client INNER JOIN chambre ON occupe.num_chambre = chambre.num_chambre INNER JOIN hotel ON chambre.num_hotel = hotel.num_hotel WHERE date_debut_occupation <= '"+dateJour+"'AND date_fin_occupation >='"+dateJour+"' AND hotel.nom = '"+nomHotel+"' AND chambre.categorie = '"+categorie+"';" );
              //ResultSet resultatChambre = statement.executeQuery( "SELECT num_chambre, occupe.num_client, nom FROM occupe INNER JOIN client ON occupe.num_client = client.num_client WHERE date_debut_occupation <= '"+dateJour+"'AND date_fin_occupation >='"+dateJour+"';" );
             System.out.println("Pour cette journée du "+ dateJour+", la/les chambre(s) occupéée(s) est/sont :");
             while (resultatChambre.next()){
@@ -44,14 +44,14 @@ public class Occupation {
             }
     }
     
-    public void chambresOccupees(String dateDonnee, String nomHotel) throws ParseException{
+    public void chambresOccupees(int categorie, String dateDonnee, String nomHotel) throws ParseException{
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(dateDonnee);
         String date = dateFormat.format(d);
         try {
             Statement statement = connexion.createStatement();
-            ResultSet resultatChambre = statement.executeQuery("SELECT occupe.num_chambre, occupe.num_client, client.nom, date_debut_occupation, date_fin_occupation FROM occupe INNER JOIN client ON occupe.num_client = client.num_client INNER JOIN chambre ON occupe.num_chambre = chambre.num_chambre INNER JOIN hotel ON chambre.num_hotel = hotel.num_hotel WHERE date_debut_occupation <= '"+date+"'AND date_fin_occupation >='"+date+"' AND hotel.nom = '"+nomHotel+"';" );
+            ResultSet resultatChambre = statement.executeQuery("SELECT occupe.num_chambre, occupe.num_client, client.nom, date_debut_occupation, date_fin_occupation FROM occupe INNER JOIN client ON occupe.num_client = client.num_client INNER JOIN chambre ON occupe.num_chambre = chambre.num_chambre INNER JOIN hotel ON chambre.num_hotel = hotel.num_hotel WHERE date_debut_occupation <= '"+date+"'AND date_fin_occupation >='"+date+"' AND hotel.nom = '"+nomHotel+"' AND chambre.categorie = '"+categorie+"';" );
              //ResultSet resultatChambre = statement.executeQuery( "SELECT num_chambre, occupe.num_client, nom FROM occupe INNER JOIN client ON occupe.num_client = client.num_client WHERE date_debut_occupation <= '"+date+"'AND date_fin_occupation >='"+date+"';" );
             System.out.println("Pour cette journée du "+ date+", la/les chambre(s) occupéée(s) est/sont :");
             while (resultatChambre.next()){
@@ -122,11 +122,11 @@ public class Occupation {
     }
     
     
-    public void creerOccupation(String debut, String fin, int num_chambre, int num_client){
+    public void creerOccupation(String debut, String fin, int numChambre, int numClient){
         
         try{
             Statement statement = connexion.createStatement();
-            ResultSet resultat = statement.executeQuery("INSERT INTO occupe(Date_debut_occupation, Date_fin_occupaion, num_chambre, num_chambre, num_client VALUES VALUES ");
+            statement.executeUpdate("INSERT INTO occupe(date_debut_occupation, date_fin_occupation, num_chambre, num_client) VALUES ('" + debut + "','" + fin + "','" + numChambre + "','" + numClient + "')");
         }catch (Exception e){
                 System.out.println("La tentative de connexion a échoué");    
                 e.printStackTrace();

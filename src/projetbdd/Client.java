@@ -5,22 +5,28 @@
  */
 package projetbdd;
 
+import java.sql.Connection;
+import java.sql.Statement;
+
 /**
  *
  * @author Emeline
  */
 public class Client {
-    
-    public void creerClient(String nom, String prenom, int numtel, String adresse, String date){
-        
+
+    ConnexionBDD c = new ConnexionBDD();
+    Connection connexion = c.Connexion();
+
+    public void creerClient(String nom, String prenom, String ville, String date_naissance) {
+        try {
+            Statement statement = connexion.createStatement();
+            statement.executeUpdate("INSERT INTO client (Nom_client, Prenom_client, Ville_client, DateNaissance) VALUES ('" + nom + "','" + prenom + "','" + ville + "','" + date_naissance + "')");
+            System.out.println("Le client "+nom+" "+prenom+" a bien été ajouté");
+            connexion.close();
+        } catch (Exception e) {
+            System.out.println("La tentative de connexion a échoué");
+            e.printStackTrace();
+        }
     }
-    
-    public void modifierClient(String nom, String prenom, int numtel, String adresse, String date){
-        
-    }
-    
-    public void supprimerClient(String nom, String prenom, int numtel, String adresse, String date){
-        
-    }
-    
+
 }
